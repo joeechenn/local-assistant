@@ -19,20 +19,35 @@ model = AutoModelForCausalLM.from_pretrained(
 
 messages = [
     {"role": "system", "content": "You are a concise, helpful assistant."},
-    {"role": "user", "content": "Who are you?"}
 ]
 
-prompt = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+print(f"Memory being used (GB): {model.get_memory_footprint() / 1e9:.3f}")
 
-inputs = tok(prompt, return_tensors="pt").to("cuda")
+while True:
+    user_raw_text = input("")
 
-with torch.inference_mode():
-    out = model.generate(
-        **inputs,
-        max_new_tokens=200,
-        temperature=0.7,
-        top_p=0.9,
-        do_sample=True
-    )
+    if user_raw_text == "exit" or user_raw_text == "quit":
+        print("Shutting down...")
+        break
 
-print(tok.decode(out[0][inputs["input_ids"].shape[-1]:], skip_special_tokens=True))
+    if user_raw_text.strip() == "":
+        continue
+
+    else:
+        messages.append({"role": "user", "content": user_raw_text})
+        rendered_prompt = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        inputs = tok(rendered_prompt, return_tensors="pt").to("cuda")
+
+        with torch.inference_mode():
+            out = model.generate(
+                **inputs,
+                max_new_tokens=350,
+                temperature=0.7,
+                top_p=0.9,
+                do_sample=True,
+                pad_token_id = tok.eos_token_id
+            )
+
+        rendered_reply = tok.decode(out[0][inputs["input_ids"].shape[-1]:], skip_special_tokens=True)
+        messages.append({"role": "assistant", "content": rendered_reply})
+        print(rendered_reply)
