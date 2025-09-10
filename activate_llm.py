@@ -42,7 +42,6 @@ while True:
             out = model.generate(
                 **inputs,
                 max_new_tokens=350,
-                temperature=0.7,
                 top_p=0.9,
                 do_sample=True,
                 pad_token_id = tok.eos_token_id
