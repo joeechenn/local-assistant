@@ -21,7 +21,6 @@ messages = [
     {"role": "system", "content": "You are a concise, helpful assistant."},
 ]
 
-print(f"Memory being used (GB): {model.get_memory_footprint() / 1e9:.3f}")
 
 while True:
     user_raw_text = input("")
