@@ -4,11 +4,11 @@ import numpy as np
 import queue
 
 rate = 16000
-qsamples = queue.Queue()
+mic_samples = queue.Queue()
 model = WhisperModel("small", device="cpu", compute_type="int8")
 
 def callback(indata, frames, time, status):
-    qsamples.put(indata.copy())
+    mic_samples.put(indata.copy())
 
 stream = sd.InputStream(samplerate=rate, channels=1, dtype='float32', callback=callback)
 stream.start()
@@ -18,7 +18,7 @@ def read_seconds(sec=2.0):
     buffer = []
     heard = 0
     while heard < listen:
-        raw = qsamples.get()
+        raw = mic_samples.get()
         buffer.append(raw)
         heard += len(raw)
     return np.concatenate(buffer, axis=0).squeeze()
