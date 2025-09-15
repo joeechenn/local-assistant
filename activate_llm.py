@@ -1,6 +1,9 @@
 from transformers import AutoProcessor, AutoModelForImageTextToText, BitsAndBytesConfig
 import torch
 
+torch.backends.cuda.matmul.allow_tf32 = True
+torch.backends.cudnn.allow_tf32 = True
+
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_use_double_quant=True,
@@ -14,7 +17,8 @@ model = AutoModelForImageTextToText.from_pretrained(
     model_id,
     device_map="auto",
     quantization_config=bnb_config,
-    dtype=torch.float16)
+    dtype=torch.float16,
+    attn_implementation="sdpa")
 
 messages = [
     {"role": "system",
@@ -57,7 +61,7 @@ while True:
 
         out = model.generate(
             **inputs,
-            max_new_tokens=350,
+            max_new_tokens=400,
             do_sample=True,
             top_p=0.9,
             pad_token_id=stop_ids[0],
