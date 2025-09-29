@@ -1,0 +1,3 @@
+[submodule "multifunc-cv"]
+	path = multifunc-cv
+	url = https://github.com/joeechenn/multifunc-cv.git
