@@ -18,7 +18,9 @@ model = AutoModelForImageTextToText.from_pretrained(
     device_map="auto",
     quantization_config=bnb_config,
     dtype=torch.float16,
-    attn_implementation="sdpa")
+    attn_implementation="sdpa",
+    use_safetensors=True,
+    low_cpu_mem_usage=False)
 
 messages = [
     {"role": "system",
@@ -61,9 +63,10 @@ while True:
 
         out = model.generate(
             **inputs,
-            max_new_tokens=400,
+            max_new_tokens=250,
             do_sample=True,
             top_p=0.9,
+            use_cache=True,
             pad_token_id=stop_ids[0],
             eos_token_id=stop_ids,
         )
