@@ -1,3 +1,6 @@
+import os
+os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
+
 import cv2
 from camera import Camera
 from detectors.face_detect import FaceDetect
@@ -8,7 +11,7 @@ FACE_MODEL = "models/blaze_face_short_range.tflite"
 GESTURE_MODEL = "models/gesture_recognizer.task"
 
 def main():
-    cam = Camera(index=0, width=1280, height=720)
+    cam = Camera()
     face = FaceDetect(FACE_MODEL)
     gesture = GestureRecog(GESTURE_MODEL)
 
