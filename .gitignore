@@ -2,3 +2,7 @@
 *.jpeg
 *.png
 packages/multifunc_cv/data/
+
+__pycache__/
+*.pyc
+*.pyo
