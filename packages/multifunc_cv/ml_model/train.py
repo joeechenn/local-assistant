@@ -36,7 +36,7 @@ def save_checkpoint(model, optimizer, epoch, loss, filepath):
         'optimizer_state_dict': optimizer.state_dict(),
         'loss': loss,
     }, filepath)
-    print(f'Checkpoint saved to {filepath}')
+    print(f'Checkpoint saved in {filepath}')
 
 def main():
     os.makedirs('checkpoints', exist_ok=True)
@@ -54,8 +54,8 @@ def main():
         transforms.Normalize(mean=[0.5], std=[0.5])
     ])
 
-    dataset = FaceDataset(root_dir='../data/', transform=transform)
-    dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=0)
+    dataset = FaceDataset(root_dir='../data/train/', transform=transform)
+    dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
     num_epochs = 20
 
@@ -64,9 +64,6 @@ def main():
 
         avg_loss = train_epoch(model, dataloader, criterion, optimizer, device)
         print(f'Average Loss: {avg_loss:.4f}')
-
-        if (epoch + 1) % 10 == 0:
-            save_checkpoint(model, optimizer, epoch, avg_loss, f'checkpoints/model_epoch_{epoch + 1}.pth')
 
     save_checkpoint(model, optimizer, num_epochs, avg_loss, 'checkpoints/final_model.pth')
     print('\nTraining complete')
