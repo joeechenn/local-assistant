@@ -6,3 +6,11 @@ packages/multifunc_cv/data/
 __pycache__/
 *.pyc
 *.pyo
+
+*.pth
+*.pt
+*.ckpt
+checkpoints/
+
+.idea/
+*.iml
