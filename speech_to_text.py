@@ -5,7 +5,7 @@ import queue
 
 rate = 16000
 mic_samples = queue.Queue()
-model = WhisperModel("small", device="cpu", compute_type="int8")
+model = WhisperModel("small", device="cuda", compute_type="float16")
 
 def callback(indata, frames, time, status):
     mic_samples.put(indata.copy())
