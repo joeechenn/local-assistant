@@ -14,7 +14,3 @@ checkpoints/
 
 .idea/
 *.iml
-
-.codex/
-
-AGENTS.md
