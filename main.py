@@ -1,8 +1,8 @@
 from speech_to_text import SpeechToText
 from llm import LLM
 
-stt = SpeechToText()
 llm = LLM()
+stt = SpeechToText()
 
 try:
     while stt.running:
